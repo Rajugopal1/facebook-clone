@@ -1,6 +1,9 @@
 {
   "name": "FaceBook-Clone-BE",
   "version": "1.0.0",
+  "engines": {
+    "node": "v14.17.6"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
