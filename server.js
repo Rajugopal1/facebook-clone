@@ -21,12 +21,16 @@ app.use(
 require('./routes/routes')(app);
 // app.use('/api/v1/', routes)
 
-app.listen(6000, () => {
+const PORT=process.env.PORT || 6000;
+
+const DATABASE = process.env.DATABASE || "mongodb://localhost:27017/FacebookClone";
+
+app.listen(PORT, () => {
   console.log("Listening on port 5000");
 });
 
 //create connection to connect to mongoDb:
-let db = mongoose.connect("mongodb://localhost:27017/FacebookClone", {});
+let db = mongoose.connect(DATABASE, {});
 
 db = mongoose.connection;
 //test the connection
