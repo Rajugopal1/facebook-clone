@@ -27,16 +27,12 @@ const postSchema = new Schema(
       },
       date: String,
     },
-    image: String,
+    image: {type: String},
     isProfilePost: {
       type: Boolean,
       default: false,
     },
 
-    profilePostData: {
-      coverImage: String,
-      profileImage: String,
-    },
 
     privacy: {
       type: String,

@@ -27,7 +27,7 @@ function isLogin(req, res, next) {
 function verifyRoles(...roles) {
   return async (req, res, next) => {
     userData = await User.findOne({ _id: req.user._id });
-    if (!roles.includes(userData.role)) {
+    if (!roles.includes(userData?.role)) {
       return res.send({ message: "Access Rejected" });
     }
     next();

@@ -7,6 +7,10 @@ const { verifyRoles } = require('../middlewares/auth');
 const roles_list = require('../config/roles');
 const userController = require('../controllers/userActions');
 const postController = require('../controllers/post');
+const community = require('../controllers/community');
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 
 
 module.exports = (app) => {
@@ -28,21 +32,10 @@ app.get('/user/:id', [userAuth, isLogin,paramsId, headerUserId],verifyRoles(role
 
 //Post
 
-app.post('/myprofile/post',[userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), postController.createPost);
+app.post('/myprofile/post',[userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER),upload.single('image'), postController.createPost);
 app.get('/myprofile/post',[userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), postController.getAllPosts);
-
+app.get('/mycommunity/feed',[userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), community.getFeed);
 app.delete('/myprofile/post/:id',[userAuth, isLogin, paramsId, headerUserId],verifyRoles(roles_list.ADMIN,roles_list.USER), postController.deletePost);
-
-//Events
-// app.post('/event', [userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), eventController.createEvent);
-// app.get('/event', [userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.getAllEvents);
-// app.get('/event/byuser', [userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.getEventsByUserID);
-// app.get('/event/invitations', [userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.invitations);
-// app.get('/event/list', [userAuth, isLogin],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.list);
-// app.get('/event/:id', [userAuth, isLogin,paramsId, headerUserId],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.getEventById);
-// app.get('/eventdetails/:id', [userAuth, isLogin, paramsId, headerUserId],verifyRoles(roles_list.ADMIN,roles_list.USER), eventDashboard.eventDetails);
-// app.patch('/event/:id', [userAuth, isLogin, paramsId, headerUserId],verifyRoles(roles_list.ADMIN,roles_list.USER), eventController.updateEvent);
-// app.delete('/event/:id', [userAuth, isLogin, paramsId, headerUserId],verifyRoles(roles_list.ADMIN,roles_list.USER), eventController.deletedEvent);
 
 app.use(error);
 

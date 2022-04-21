@@ -3,6 +3,7 @@ const Post = require("../model/postModel");
 
 module.exports = {
   async createPost(req, res) {
+        const path = req.file.path.split("\\").slice(-1)[0];
     let { content, privacy, image, body } = req.body;
 
     if (!content && content.trim().length === 0 && !image) {
@@ -13,7 +14,7 @@ module.exports = {
     }
     try {
       const createPost = new Post({
-        image,
+        image: path,
         privacy,
         content,
         user: req.user._id,
@@ -24,10 +25,10 @@ module.exports = {
       if (body) {
         if (Object.keys(body)?.length) {
           savePost.body = {
-            feelings: body.feelings,
-            at: body.at,
-            date: body.date,
-            with: body.with.map((user) => user),
+            feelings: body?.feelings,
+            at: body?.at,
+            date: body?.date,
+            with: body?.with?.map((user) => user),
           };
 
           await savePost.save();
