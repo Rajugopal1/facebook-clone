@@ -47,6 +47,8 @@ const validationInput = async (req) => {
 
 module.exports = {
   async createUser(req, res) {
+      const path = req.file.path.split("\\").slice(-1)[0];
+
     try {
       await validationInput(req);
       const errors = validationResult(req);
@@ -54,7 +56,7 @@ module.exports = {
       if (!errors.isEmpty()) return res.status(400).send(errors);
       let registerUser = req.body;
       registerUser.password = await User.createPassword(registerUser.password);
-      registerUser = await User.create(registerUser);
+      registerUser = await User.create({...registerUser, image: path});
       return res.send({
         _id: registerUser._id,
         email: registerUser.email,
@@ -62,6 +64,7 @@ module.exports = {
         password: registerUser.password,
         city: registerUser.city,
         phoneNumber: registerUser.phoneNumber,
+        image: registerUser.image,
       });
     } catch (error) {
       res
